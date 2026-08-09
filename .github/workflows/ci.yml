@@ -1,0 +1,28 @@
+# Roda o build em cada pull request, sem publicar nada.
+#
+# O deploy.yml só dispara depois do merge, então sem isso um erro de build
+# chegaria na main e derrubaria o site até o próximo push.
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
