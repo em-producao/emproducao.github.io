@@ -1,0 +1,105 @@
+---
+import { NEWSLETTER, acaoDoFormulario, formularioAtivo } from '../consts';
+
+interface Props {
+  /** 'destaque' na home, 'discreto' no pé de cada número. */
+  variante?: 'destaque' | 'discreto';
+}
+
+const { variante = 'destaque' } = Astro.props;
+---
+
+<section class={`assinatura ${variante}`} aria-labelledby="assinar-titulo">
+  {
+    variante === 'destaque' ? (
+      <h2 id="assinar-titulo">Receba por e-mail</h2>
+    ) : (
+      <h2 id="assinar-titulo" class="subtitulo-secao">
+        Receba o próximo número
+      </h2>
+    )
+  }
+
+  <p class="texto-suave">{NEWSLETTER.chamada}</p>
+
+  {
+    formularioAtivo ? (
+      <form action={acaoDoFormulario} method="post" class="campos">
+        <label class="visualmente-oculto" for="email">
+          Seu e-mail
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email_address"
+          placeholder="voce@exemplo.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="botao">
+          Assinar
+        </button>
+      </form>
+    ) : (
+      <p class="aviso">
+        O formulário do Kit ainda não está ligado. Preencha <code>NEWSLETTER.formId</code> em{' '}
+        <code>src/consts.ts</code> com o id do formulário e ele aparece aqui.
+      </p>
+    )
+  }
+
+  <p class="miudo">Sem spam. Dá para sair a qualquer momento.</p>
+</section>
+
+<style>
+  .assinatura {
+    border: 1px solid var(--borda);
+    padding: 1.6rem;
+  }
+
+  .assinatura.destaque {
+    border-color: var(--borda-forte);
+    background: var(--realce);
+  }
+
+  .assinatura h2:not(.subtitulo-secao) {
+    margin-bottom: 0.6rem;
+  }
+
+  .campos {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1.1rem;
+  }
+
+  input {
+    flex: 1 1 16rem;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--preto);
+    color: var(--texto);
+    border: 1px solid var(--borda-forte);
+  }
+
+  input::placeholder {
+    color: var(--texto-fraco);
+  }
+
+  .miudo {
+    margin: 0.9rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--texto-fraco);
+  }
+
+  .visualmente-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

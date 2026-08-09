@@ -1,0 +1,65 @@
+---
+import { REDES, SITE } from '../consts';
+
+const ano = new Date().getUTCFullYear();
+---
+
+<footer>
+  <div class="container linhas">
+    <p class="linha-terminal">$ deploy --env production --region sa-east-1</p>
+
+    <div class="fim">
+      <p class="creditos">
+        {SITE.nome}, por {SITE.autores}. {ano}.
+      </p>
+      <nav aria-label="Redes e assinaturas">
+        {REDES.map((rede) => <a href={rede.href} rel="me noopener">{rede.texto}</a>)}
+        <a href="/rss.xml">RSS</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--borda);
+    padding-block: 1.5rem 2.5rem;
+  }
+
+  .linhas {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .fim {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .creditos {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--texto-fraco);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  nav a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--texto-suave);
+  }
+
+  nav a:hover {
+    color: var(--ambar);
+    text-decoration: none;
+  }
+</style>

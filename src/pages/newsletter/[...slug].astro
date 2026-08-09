@@ -1,0 +1,166 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import FormularioNewsletter from '../../components/FormularioNewsletter.astro';
+import { caminhoDoNumero, dataISO, dataPorExtenso, listarNumeros } from '../../lib/newsletter';
+
+export async function getStaticPaths() {
+  const numeros = await listarNumeros();
+
+  return numeros.map((numero, indice) => ({
+    params: { slug: numero.id },
+    props: {
+      numero,
+      // A lista vem do mais recente para o mais antigo.
+      maisNovo: numeros[indice - 1] ?? null,
+      maisAntigo: numeros[indice + 1] ?? null,
+    },
+  }));
+}
+
+const { numero, maisNovo, maisAntigo } = Astro.props;
+const { Content } = await render(numero);
+---
+
+<Base
+  titulo={numero.data.titulo}
+  descricao={numero.data.resumo}
+  tipo="article"
+  publicadoEm={numero.data.data}
+  atualizadoEm={numero.data.atualizadoEm}
+>
+  <article>
+    <header class="topo">
+      <p class="rotulo">Número {numero.data.numero}</p>
+      <h1>{numero.data.titulo}</h1>
+      <p class="meta">
+        <time datetime={dataISO(numero.data.data)}>{dataPorExtenso(numero.data.data)}</time>
+        {
+          numero.data.atualizadoEm && (
+            <span>· atualizado em {dataPorExtenso(numero.data.atualizadoEm)}</span>
+          )
+        }
+      </p>
+    </header>
+
+    <div class="prosa">
+      <Content />
+    </div>
+
+    {
+      numero.data.urlNoKit && (
+        <p class="miudo">
+          Este número também foi enviado por e-mail.{' '}
+          <a href={numero.data.urlNoKit} rel="nofollow">
+            Ver a versão do Kit
+          </a>
+          .
+        </p>
+      )
+    }
+  </article>
+
+  {
+    (maisNovo || maisAntigo) && (
+      <nav class="vizinhos" aria-label="Outros números">
+        {maisAntigo && (
+          <a class="vizinho" href={caminhoDoNumero(maisAntigo)}>
+            <span class="direcao">Número anterior</span>
+            <span class="nome">{maisAntigo.data.titulo}</span>
+          </a>
+        )}
+        {maisNovo && (
+          <a class="vizinho fim" href={caminhoDoNumero(maisNovo)}>
+            <span class="direcao">Próximo número</span>
+            <span class="nome">{maisNovo.data.titulo}</span>
+          </a>
+        )}
+      </nav>
+    )
+  }
+
+  <div>
+    <FormularioNewsletter variante="discreto" />
+  </div>
+</Base>
+
+<style>
+  .topo {
+    border-bottom: 1px solid var(--borda);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .topo h1 {
+    margin-bottom: 0.7rem;
+  }
+
+  .meta {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--texto-fraco);
+  }
+
+  .prosa :global(h2) {
+    margin-top: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .prosa :global(h3) {
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .prosa :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .prosa :global(img) {
+    border: 1px solid var(--borda);
+  }
+
+  .miudo {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--texto-fraco);
+  }
+
+  .vizinhos {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-top: 1px solid var(--borda);
+    padding-top: 1.5rem;
+  }
+
+  .vizinho {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-width: 20rem;
+  }
+
+  .vizinho.fim {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .direcao {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--texto-fraco);
+  }
+
+  .nome {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--texto);
+  }
+
+  .vizinho:hover .nome {
+    color: var(--ambar);
+  }
+</style>

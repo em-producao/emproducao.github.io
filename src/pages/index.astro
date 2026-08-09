@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import FormularioNewsletter from '../components/FormularioNewsletter.astro';
+import ListaDeNumeros from '../components/ListaDeNumeros.astro';
+import { LINKS } from '../consts';
+import { listarNumeros } from '../lib/newsletter';
+
+const numeros = await listarNumeros();
+const ultimos = numeros.slice(0, 5);
+---
+
+<Base>
+  <section class="abertura">
+    <p class="rotulo">Newsletter semanal</p>
+    <h1>Do localhost para o mundo</h1>
+    <p class="chamada">Cloud e IA com consciência e responsabilidade.</p>
+    <p class="texto-suave">
+      Muita gente tem algo que funciona e que existe só no próprio computador. Toda semana a gente
+      escreve sobre o que separa esse projeto de um projeto no ar. Escrito por Palla e Chico.
+    </p>
+  </section>
+
+  <div>
+    <FormularioNewsletter />
+  </div>
+
+  <section>
+    <h2 class="subtitulo-secao">Últimos números</h2>
+    {
+      ultimos.length > 0 ? (
+        <>
+          <ListaDeNumeros numeros={ultimos} comResumo />
+          {numeros.length > ultimos.length && (
+            <p class="mais">
+              <a href="/newsletter/">Ver todos os {numeros.length} números</a>
+            </p>
+          )}
+        </>
+      ) : (
+        <p class="aviso">
+          O primeiro número ainda não saiu. Quem assinar agora recebe ele no e-mail.
+        </p>
+      )
+    }
+  </section>
+
+  {
+    LINKS.workshop && (
+      <section>
+        <h2 class="subtitulo-secao">Workshop</h2>
+        <p>
+          Dois dias construindo junto, do zero até o deploy. Você sai com algo funcionando de
+          verdade.
+        </p>
+        <p>
+          <a class="botao botao-vazado" href={LINKS.workshop}>
+            Ver a próxima edição
+          </a>
+        </p>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .abertura h1 {
+    margin-bottom: 0.7rem;
+  }
+
+  .abertura .chamada {
+    margin-bottom: 1.4rem;
+  }
+
+  .abertura .texto-suave {
+    max-width: 40rem;
+    margin-bottom: 0;
+  }
+
+  .mais {
+    margin: 1.4rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
+</style>

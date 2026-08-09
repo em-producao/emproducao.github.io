@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import FormularioNewsletter from '../components/FormularioNewsletter.astro';
+import { LINKS } from '../consts';
+---
+
+<Base
+  titulo="Sobre"
+  descricao="Quem escreve o Em Produção e por que esta newsletter existe. Palla e Chico, dois AWS Heroes, sobre cloud, IA e o caminho até produção."
+>
+  <section>
+    <h1>Sobre</h1>
+    <p class="chamada">Hoje estamos num novo renascimento.</p>
+    <p>
+      IA e cloud estão mudando tudo, de novo. E de novo, a maioria vai ficar do lado de fora. Não
+      precisa ser assim.
+    </p>
+    <p>
+      O desenvolvedor da renascença não é o que sabe mais. É o que entende o todo, usa as ferramentas
+      certas e coloca no ar com responsabilidade. Você tem o domínio. Nós temos o caminho com AWS e
+      IA.
+    </p>
+    <p>O trabalho é seu. Não das ferramentas.</p>
+    <p class="chamada">Bora para produção!</p>
+  </section>
+
+  <section>
+    <h2 class="subtitulo-secao">O que você recebe aqui</h2>
+    <p>
+      Uma carta por semana sobre o que separa um projeto que roda no seu computador de um projeto que
+      existe no mundo. A gente escreve sobre o que testou, incluindo o que quebrou no caminho. Sem
+      fórmula e sem promessa de atalho.
+    </p>
+    <p>
+      Todo número fica publicado aqui no site, aberto, sem cadastro para ler. O e-mail é só a forma
+      de chegar até você primeiro.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="subtitulo-secao">Quem escreve</h2>
+
+    <div class="pessoa">
+      <h3>Palla</h3>
+      <p class="texto-suave">
+        Marcelo Palladino. Mais de três décadas na indústria de software, entre desenvolvimento,
+        arquitetura, Developer Advocacy na AWS e engenharia no Nubank. Palestrou no AWS Summit São
+        Paulo, TDC, Python Brasil, DevOps Days e em muitos outros pelo Brasil. Hoje ajuda pessoas e
+        organizações a adotar cloud e IA com propriedade.
+      </p>
+    </div>
+
+    <div class="pessoa">
+      <h3>Chico</h3>
+      <p class="texto-suave">
+        Francisco Edilton. Criador do AWS User Group São Paulo e AWS Community Hero desde 2016, um
+        dos primeiros no Brasil. Especialista em arquitetura cloud, automação de infraestrutura, IAM
+        e CloudFormation. Atua em grandes projetos AWS no Brasil e fora dele.
+      </p>
+    </div>
+  </section>
+
+  {
+    LINKS.workshop && (
+      <section>
+        <h2 class="subtitulo-secao">O workshop</h2>
+        <p>
+          Além da newsletter, a gente faz encontros de dois dias em que você constrói junto e sai com
+          algo no ar.{' '}
+          <a href={LINKS.workshop}>Ver a próxima edição</a>.
+        </p>
+      </section>
+    )
+  }
+
+  <div>
+    <FormularioNewsletter variante="discreto" />
+  </div>
+</Base>
+
+<style>
+  .pessoa + .pessoa {
+    margin-top: 1.8rem;
+  }
+
+  .pessoa h3 {
+    margin-bottom: 0.4rem;
+    color: var(--ambar);
+  }
+
+  .pessoa p {
+    margin-bottom: 0;
+  }
+</style>

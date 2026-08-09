@@ -1,0 +1,99 @@
+---
+// Só o subconjunto latino. O resto nunca seria baixado, mas também não precisa
+// ser publicado.
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-400-italic.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '../styles/global.css';
+
+import Cabecalho from '../components/Cabecalho.astro';
+import Rodape from '../components/Rodape.astro';
+import { SITE } from '../consts';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  /** 'article' nas páginas de número, 'website' no resto. */
+  tipo?: 'website' | 'article';
+  publicadoEm?: Date;
+  atualizadoEm?: Date;
+  /** Fora do fluxo normal, quando a página não deve ser indexada. */
+  semIndexar?: boolean;
+}
+
+const {
+  titulo,
+  descricao = SITE.descricao,
+  tipo = 'website',
+  publicadoEm,
+  atualizadoEm,
+  semIndexar = false,
+} = Astro.props;
+
+const tituloCompleto = titulo ? `${titulo} · ${SITE.nome}` : `${SITE.nome} · ${SITE.subtitulo}`;
+
+// Astro.site vem de `astro.config.mjs`. É a única fonte da URL canônica.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imagem = new URL('/og.png', Astro.site);
+
+const dadosEstruturados = {
+  '@context': 'https://schema.org',
+  '@type': tipo === 'article' ? 'BlogPosting' : 'WebSite',
+  name: SITE.nome,
+  headline: titulo ?? SITE.nome,
+  description: descricao,
+  url: canonical.href,
+  inLanguage: SITE.idioma,
+  ...(tipo === 'article'
+    ? {
+        author: [
+          { '@type': 'Person', name: 'Marcelo Palladino' },
+          { '@type': 'Person', name: 'Francisco Edilton' },
+        ],
+        datePublished: publicadoEm?.toISOString(),
+        ...(atualizadoEm ? { dateModified: atualizadoEm.toISOString() } : {}),
+      }
+    : {}),
+};
+---
+
+<!doctype html>
+<html lang={SITE.idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descricao} />
+    <link rel="canonical" href={canonical} />
+    {semIndexar && <meta name="robots" content="noindex, follow" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.nome} href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={tipo} />
+    <meta property="og:site_name" content={SITE.nome} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={titulo ?? SITE.nome} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagem} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo ?? SITE.nome} />
+    <meta name="twitter:description" content={descricao} />
+    <meta name="twitter:image" content={imagem} />
+
+    <meta name="theme-color" content="#0a0a0a" />
+    <script type="application/ld+json" set:html={JSON.stringify(dadosEstruturados)} is:inline />
+  </head>
+  <body>
+    <Cabecalho />
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+    <Rodape />
+  </body>
+</html>
