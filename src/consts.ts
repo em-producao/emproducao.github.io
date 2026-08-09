@@ -14,7 +14,7 @@ export const SITE = {
   descricao:
     'Cloud e IA: o que você precisa para sair do localhost para o mundo, com consciência e responsabilidade.',
   idioma: 'pt-BR',
-  autores: 'Palla e Chico',
+  autores: 'Chico e Palla',
 } as const;
 
 /**

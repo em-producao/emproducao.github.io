@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'JetBrains Mono';
+        src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2')
+          format('woff2-variations');
+        font-weight: 100 800;
+      }
+      @font-face {
+        font-family: 'IBM Plex Sans';
+        src: url('../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2')
+          format('woff2');
+        font-weight: 400;
+      }
+
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #0a0a0a;
+        color: #f5f5f5;
+        font-family: 'IBM Plex Sans', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 72px 80px;
+        overflow: hidden;
+      }
+
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #f5a623;
+      }
+
+      h1 {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 800;
+        font-size: 82px;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        max-width: 17ch;
+      }
+
+      .chamada {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 27px;
+        line-height: 1.45;
+        color: #f5a623;
+        margin-top: 26px;
+        max-width: 30ch;
+      }
+
+      .rodape {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 20px;
+      }
+
+      .prompt {
+        color: #00ff41;
+        opacity: 0.5;
+      }
+
+      .autores {
+        color: rgb(245 245 245 / 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="marca">
+      <svg viewBox="0 0 64 64" width="30" height="30" fill="none">
+        <polyline
+          points="8,8 32,32 8,56"
+          stroke="#F5A623"
+          stroke-width="6"
+          stroke-linecap="square"
+          stroke-linejoin="miter"
+          stroke-miterlimit="10"
+        />
+        <line x1="42" y1="52" x2="60" y2="52" stroke="#F5A623" stroke-width="6" stroke-linecap="square" />
+      </svg>
+      <span>em produção</span>
+    </div>
+
+    <div>
+      <h1>Do localhost para o mundo</h1>
+      <p class="chamada">Cloud e IA com consciência e responsabilidade.</p>
+    </div>
+
+    <div class="rodape">
+      <span class="prompt">$ deploy --env production</span>
+      <span class="autores">por Chico e Palla</span>
+    </div>
+  </body>
+</html>

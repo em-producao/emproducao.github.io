@@ -1,33 +1,9 @@
 /*
  * Em Produção, folha de estilo única.
  *
- * Paleta e tipografia vêm do brand system. Preto e branco como base, âmbar
- * como acento, verde de terminal em uso pontual. Título em mono, corpo em
- * humanista sans.
+ * A paleta, a tipografia e a medida ficam em src/styles/tema.css. Aqui só há
+ * regras que consomem esses tokens.
  */
-
-:root {
-  --preto: #0a0a0a;
-  --branco: #f5f5f5;
-  --ambar: #f5a623;
-  --verde: #00ff41;
-
-  --fundo: var(--preto);
-  --texto: var(--branco);
-  --texto-suave: rgb(245 245 245 / 0.66);
-  --texto-fraco: rgb(245 245 245 / 0.42);
-  --borda: rgb(245 245 245 / 0.12);
-  --borda-forte: rgb(245 245 245 / 0.28);
-  --realce: rgb(245 166 35 / 0.12);
-
-  --mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-
-  --largura: 46rem;
-  --gutter: 1.5rem;
-
-  color-scheme: dark;
-}
 
 *,
 *::before,
@@ -47,9 +23,9 @@ body {
   flex-direction: column;
   background: var(--fundo);
   color: var(--texto);
-  font-family: var(--sans);
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-family: var(--fonte-texto);
+  font-size: var(--corpo);
+  line-height: var(--entrelinha);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -57,7 +33,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--mono);
+  font-family: var(--fonte-titulo);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -87,7 +63,7 @@ table {
 }
 
 a {
-  color: var(--ambar);
+  color: var(--link);
   text-decoration: none;
   text-underline-offset: 0.2em;
 }
@@ -98,7 +74,7 @@ a:focus-visible {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ambar);
+  outline: 2px solid var(--acento);
   outline-offset: 3px;
 }
 
@@ -117,7 +93,7 @@ hr {
 code {
   font-family: var(--mono);
   font-size: 0.875em;
-  background: rgb(245 245 245 / 0.08);
+  background: var(--fundo-codigo);
   padding: 0.1em 0.35em;
   border-radius: 3px;
 }
@@ -138,13 +114,13 @@ pre code {
 }
 
 /* O Shiki escreve o fundo do tema direto no style do elemento. A paleta aqui é
-   preta, então o fundo dele é substituído e só as cores dos tokens ficam. */
+   outra, então o fundo dele é substituído e só as cores dos tokens ficam. */
 pre.astro-code {
-  background-color: rgb(245 245 245 / 0.045) !important;
+  background-color: var(--fundo-codigo) !important;
 }
 
 blockquote {
-  border-left: 2px solid var(--ambar);
+  border-left: 2px solid var(--acento);
   padding-left: 1.1rem;
   margin-left: 0;
   color: var(--texto-suave);
@@ -164,7 +140,7 @@ td {
 }
 
 th {
-  font-family: var(--mono);
+  font-family: var(--fonte-ui);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -193,17 +169,19 @@ main > .container > * + * {
 /* ---------- peças reutilizadas ---------- */
 
 .rotulo {
-  font-family: var(--mono);
+  font-family: var(--fonte-ui);
   font-size: 0.72rem;
+  font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--verde);
+  color: var(--rotulo);
   margin: 0 0 0.9rem;
 }
 
 .subtitulo-secao {
-  font-family: var(--mono);
+  font-family: var(--fonte-ui);
   font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--texto-fraco);
@@ -213,9 +191,9 @@ main > .container > * + * {
 }
 
 .chamada {
-  font-family: var(--mono);
+  font-family: var(--fonte-titulo);
   font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
-  color: var(--ambar);
+  color: var(--chamada);
   line-height: 1.5;
 }
 
@@ -226,20 +204,20 @@ main > .container > * + * {
 .linha-terminal {
   font-family: var(--mono);
   font-size: 0.75rem;
-  color: var(--verde);
-  opacity: 0.4;
+  color: var(--terminal);
+  opacity: 0.55;
   margin: 0;
 }
 
 .botao {
   display: inline-block;
-  font-family: var(--mono);
+  font-family: var(--fonte-ui);
   font-size: 0.85rem;
   font-weight: 700;
   padding: 0.7rem 1.4rem;
-  border: 1px solid var(--ambar);
-  background: var(--ambar);
-  color: var(--preto);
+  border: 1px solid var(--acento);
+  background: var(--acento);
+  color: var(--fundo);
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
@@ -251,7 +229,7 @@ main > .container > * + * {
 
 .botao-vazado {
   background: none;
-  color: var(--ambar);
+  color: var(--acento);
 }
 
 .botao-vazado:hover {

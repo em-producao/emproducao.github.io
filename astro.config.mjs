@@ -12,7 +12,9 @@ export default defineConfig({
   integrations: [sitemap()],
   markdown: {
     shikiConfig: {
-      theme: 'github-dark',
+      // Os dois temas saem no HTML. Qual deles vale é decidido no CSS, em
+      // src/styles/temas/, junto com o resto da paleta.
+      themes: { light: 'github-light', dark: 'github-dark' },
       wrap: true,
     },
   },

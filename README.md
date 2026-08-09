@@ -78,7 +78,9 @@ src/
   components/      cabeçalho, rodapé, formulário, lista de números
   layouts/Base.astro   head, SEO, dados estruturados
   pages/           rotas
-  styles/global.css    paleta, tipografia e componentes de estilo
+  styles/tema.css      tokens de cor, tipografia e medida
+  styles/global.css    regras que consomem os tokens
+scripts/og.html    fonte da imagem de compartilhamento
 ```
 
 ## Deploy e domínio
@@ -100,6 +102,23 @@ O que o site já faz:
 
 ## Identidade visual
 
-Preto `#0A0A0A`, branco `#F5F5F5`, âmbar `#F5A623` como acento e verde de terminal `#00FF41` em uso pontual. Título em JetBrains Mono, corpo em IBM Plex Sans. O símbolo é o `>_`.
+Título em JetBrains Mono, corpo e interface em IBM Plex Sans, símbolo `>_`, âmbar como acento. A fonte da verdade da marca está no repositório [backstage](https://github.com/em-producao/backstage), em `content/brand-system.md`.
 
-A fonte da verdade da marca está no repositório [backstage](https://github.com/em-producao/backstage), em `content/brand-system.md`.
+O site é claro por padrão e entra no escuro sozinho pelo `prefers-color-scheme`, sem botão. Isso é uma adaptação consciente do brand system, que nasceu preto e âmbar para peça curta de alto impacto. Aqui o conteúdo é texto longo, e três decisões mudaram por causa disso:
+
+- O contraste caiu de 18:1 para cerca de 12:1 no modo escuro. Contraste no talo produz halation em leitura corrida
+- A monoespaçada ficou restrita a título, código e à linha de terminal do rodapé. Em menu, data e rótulo ela atrasa a leitura sem ganhar nada
+- O âmbar não pinta frases nem áreas grandes, só link, marca e traço. Cor de acento em texto corrido faz prosa parecer rótulo
+
+Todos os valores estão em `src/styles/tema.css`, num bloco só.
+
+### Imagem de compartilhamento
+
+`public/og.png` é gerado a partir de `scripts/og.html`. Para refazer depois de mudar o texto:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --disable-gpu --allow-file-access-from-files \
+  --window-size=1200,630 --screenshot=public/og.png \
+  "file://$PWD/scripts/og.html"
+```
