@@ -28,7 +28,7 @@ export const SITE = {
 export const NEWSLETTER = {
   formId: '', // PENDENTE: id do formulário no Kit
   nome: 'Em Produção',
-  chamada: 'Uma carta por semana sobre cloud, IA e o caminho até produção.',
+  chamada: 'Todo número chega por e-mail primeiro e depois fica publicado aqui, aberto.',
 } as const;
 
 export const formularioAtivo = NEWSLETTER.formId.length > 0;
