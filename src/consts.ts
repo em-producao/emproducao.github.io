@@ -28,6 +28,11 @@ export const NEWSLETTER = {
   formId: '9787633',
   nome: 'Em Produção',
   chamada: 'Todo número chega por e-mail primeiro e depois fica publicado aqui, aberto.',
+  // Mensagem que aparece no lugar do formulário quando o envio dá certo sem
+  // sair da página. O texto supõe que a lista pede confirmação por e-mail. Se
+  // a confirmação estiver desligada no Kit, troque por algo como "Pronto, você
+  // está na lista", porque nenhum link vai chegar.
+  confirmacao: 'Quase lá. Abra o seu e-mail e clique no link para confirmar a inscrição.',
 } as const;
 
 export const formularioAtivo = NEWSLETTER.formId.length > 0;

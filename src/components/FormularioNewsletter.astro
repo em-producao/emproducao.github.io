@@ -7,6 +7,10 @@ interface Props {
 }
 
 const { variante = 'destaque' } = Astro.props;
+
+// O componente pode aparecer duas vezes na mesma página, uma de cada variante.
+// O id do campo entra no `for` do label, então precisa ser diferente nas duas.
+const idDoCampo = `email-${variante}`;
 ---
 
 <section class={`assinatura ${variante}`} aria-labelledby="assinar-titulo">
@@ -24,22 +28,29 @@ const { variante = 'destaque' } = Astro.props;
 
   {
     formularioAtivo ? (
-      <form action={acaoDoFormulario} method="post" class="campos">
-        <label class="visualmente-oculto" for="email">
-          Seu e-mail
-        </label>
-        <input
-          id="email"
-          type="email"
-          name="email_address"
-          placeholder="voce@exemplo.com"
-          autocomplete="email"
-          required
-        />
-        <button type="submit" class="botao">
-          Assinar
-        </button>
-      </form>
+      <>
+        <form action={acaoDoFormulario} method="post" class="campos" data-formulario-kit>
+          <label class="visualmente-oculto" for={idDoCampo}>
+            Seu e-mail
+          </label>
+          <input
+            id={idDoCampo}
+            type="email"
+            name="email_address"
+            placeholder="voce@exemplo.com"
+            autocomplete="email"
+            required
+          />
+          <button type="submit" class="botao">
+            Assinar
+          </button>
+        </form>
+        {/* Só aparece quando o envio por fetch dá certo. Sem JavaScript, o
+            formulário posta do jeito normal e esta mensagem nunca é usada. */}
+        <p class="confirmacao" role="status" tabindex="-1" hidden data-confirmacao>
+          {NEWSLETTER.confirmacao}
+        </p>
+      </>
     ) : (
       <p class="aviso">
         O formulário do Kit ainda não está ligado. Preencha <code>NEWSLETTER.formId</code> em{' '}
@@ -48,8 +59,62 @@ const { variante = 'destaque' } = Astro.props;
     )
   }
 
-  <p class="miudo">Sem spam. Dá para sair a qualquer momento.</p>
+  <p class="miudo" data-miudo>Sem spam. Dá para sair a qualquer momento.</p>
 </section>
+
+{/*
+  Melhoria progressiva. Sem este script o formulário funciona: posta para o Kit
+  e o navegador navega para onde o Kit mandar. Com ele, a inscrição vai por
+  fetch e a pessoa não sai da página.
+
+  O endpoint do Kit responde com `access-control-allow-origin: *`, então o
+  navegador deixa a requisição sair daqui. O que ele devolve é HTML de
+  redirecionamento, não um JSON de resultado, então "a requisição não falhou" é
+  a única confirmação disponível. Se ela falhar, o envio normal do navegador
+  assume, e aí quem responde é a página do Kit.
+*/}
+<script>
+  document.querySelectorAll('form[data-formulario-kit]').forEach((formulario) => {
+    const form = formulario as HTMLFormElement;
+    const botao = form.querySelector('button');
+    const confirmacao = form.parentElement?.querySelector<HTMLElement>('[data-confirmacao]');
+    const miudo = form.closest('.assinatura')?.querySelector<HTMLElement>('[data-miudo]');
+
+    form.addEventListener('submit', async (evento) => {
+      if (!confirmacao) return; // sem lugar para mostrar o resultado, deixa navegar
+      evento.preventDefault();
+
+      const rotuloOriginal = botao?.textContent;
+      if (botao) {
+        botao.disabled = true;
+        botao.textContent = 'Enviando';
+      }
+
+      try {
+        // URLSearchParams manda o mesmo application/x-www-form-urlencoded que o
+        // navegador mandaria sozinho, que é o que o Kit já recebe hoje.
+        const corpo = new URLSearchParams();
+        new FormData(form).forEach((valor, chave) => corpo.append(chave, String(valor)));
+        const resposta = await fetch(form.action, { method: 'POST', body: corpo });
+        if (!resposta.ok) throw new Error(String(resposta.status));
+      } catch {
+        // Reinscrever o mesmo e-mail no Kit não duplica ninguém, então repetir
+        // o envio pelo caminho normal é seguro.
+        if (botao) {
+          botao.disabled = false;
+          botao.textContent = rotuloOriginal ?? 'Assinar';
+        }
+        form.submit();
+        return;
+      }
+
+      form.hidden = true;
+      if (miudo) miudo.hidden = true;
+      confirmacao.hidden = false;
+      confirmacao.focus();
+    });
+  });
+</script>
 
 <style>
   .assinatura {
@@ -72,6 +137,12 @@ const { variante = 'destaque' } = Astro.props;
     margin-top: 1.1rem;
   }
 
+  /* `display` de folha de estilo vence o [hidden] do navegador, então esconder
+     o formulário pelo JavaScript depende desta regra. */
+  .campos[hidden] {
+    display: none;
+  }
+
   input {
     flex: 1 1 16rem;
     font-family: var(--fonte-ui);
@@ -84,6 +155,21 @@ const { variante = 'destaque' } = Astro.props;
 
   input::placeholder {
     color: var(--texto-fraco);
+  }
+
+  .confirmacao {
+    margin-top: 1.1rem;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--acento);
+    color: var(--texto);
+  }
+
+  .confirmacao:focus {
+    outline: none;
+  }
+
+  .confirmacao[hidden] {
+    display: none;
   }
 
   .miudo {
