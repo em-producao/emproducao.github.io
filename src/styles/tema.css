@@ -1,0 +1,81 @@
+/*
+ * Tema do Em Produção: claro por padrão, escuro automático.
+ *
+ * Papel como base, que é como a maior parte das pessoas lê texto longo no
+ * celular durante o dia. O escuro entra sozinho pelo prefers-color-scheme,
+ * com o contraste em torno de 12:1, que é a faixa confortável em fundo
+ * escuro. O contraste no talo cansa em leitura corrida.
+ *
+ * O âmbar da marca não tem contraste suficiente como texto sobre claro, então
+ * link e marca usam um âmbar queimado, e o âmbar original fica em fundo,
+ * borda e traço.
+ *
+ * Monoespaçada só em título, código e na linha de terminal do rodapé. Em
+ * menu, data e rótulo ela deixa a leitura mais lenta sem ganhar nada.
+ */
+
+:root {
+  --ambar: #f5a623;
+  --ambar-queimado: #96550a;
+  --verde: #00ff41;
+  --verde-escuro: #0a6b2a;
+
+  --fundo: #faf9f6;
+  --texto: #23211c;
+  --texto-suave: rgb(35 33 28 / 0.72);
+  --texto-fraco: rgb(35 33 28 / 0.5);
+  --borda: rgb(35 33 28 / 0.14);
+  --borda-forte: rgb(35 33 28 / 0.3);
+  --realce: rgb(245 166 35 / 0.13);
+  --fundo-codigo: rgb(35 33 28 / 0.05);
+
+  --link: var(--ambar-queimado);
+  --acento: var(--ambar-queimado);
+  --terminal: var(--verde-escuro);
+  --rotulo: var(--texto-fraco);
+  --chamada: var(--texto);
+
+  --mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fonte-titulo: var(--mono);
+  --fonte-ui: var(--sans);
+  --fonte-texto: var(--sans);
+
+  --corpo: 1.09rem;
+  --entrelinha: 1.75;
+  --largura: 38rem;
+  --gutter: 1.5rem;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo: #131311;
+    --texto: #d8d2c6;
+    --texto-suave: rgb(216 210 198 / 0.72);
+    --texto-fraco: rgb(216 210 198 / 0.48);
+    --borda: rgb(216 210 198 / 0.14);
+    --borda-forte: rgb(216 210 198 / 0.3);
+    --realce: rgb(245 166 35 / 0.09);
+    --fundo-codigo: rgb(216 210 198 / 0.05);
+
+    --link: var(--ambar);
+    --acento: var(--ambar);
+    --terminal: rgb(0 255 65 / 0.65);
+    --rotulo: var(--texto-fraco);
+    --chamada: var(--texto);
+
+    color-scheme: dark;
+  }
+}
+
+/* No claro valem os tokens claros do Shiki, que já são o padrão. No escuro,
+   troca junto com o resto da paleta. */
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+  }
+}

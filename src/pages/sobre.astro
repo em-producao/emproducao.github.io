@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import FormularioNewsletter from '../components/FormularioNewsletter.astro';
+import { LINKS } from '../consts';
+---
+
+<Base
+  titulo="Sobre"
+  descricao="Quem escreve o Em Produção e por que esta newsletter existe. Chico e Palla, sobre cloud, IA e o caminho até produção."
+>
+  <section>
+    <h1>Sobre</h1>
+    <p class="chamada">Uma carta semanal sobre o trecho que ninguém mostra.</p>
+    <p>
+      Todo mundo publica o protótipo funcionando. Quase ninguém publica o que veio depois. A conta
+      que chegou no fim do mês, a permissão que faltava, o deploy que caiu no domingo. O Em Produção
+      é sobre esse pedaço.
+    </p>
+    <p>
+      Não é curso e não é tutorial. É o relato de duas pessoas que continuam colocando software no ar
+      e escrevem o que aprenderam na semana, enquanto ainda está fresco.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="subtitulo-secao">Por que existe</h2>
+    <p>
+      A internet encheu de texto sobre IA escrito por IA. Dá para reconhecer pelo padrão. O texto sabe
+      o nome de tudo, nunca erra e nunca rodou nada. Já recebemos relatório de consultoria com 46
+      páginas contendo nome de serviço que não existe e preço inventado.
+    </p>
+    <p>
+      A gente escreve o contrário disso. Testa antes, mostra o comando que rodou e conta quando não
+      funcionou. IA entra no processo, porque seria burrice não usar, mas ela é boa para transformar
+      o que já existe e ruim para inventar do nada.
+    </p>
+    <p>O trabalho é seu. Não das ferramentas.</p>
+  </section>
+
+  <section>
+    <h2 class="subtitulo-secao">Quem escreve</h2>
+
+    <div class="pessoa">
+      <h3>Chico</h3>
+      <p class="texto-suave">
+        Francisco Edilton. Criador do AWS User Group São Paulo e AWS Community Hero desde 2016, um
+        dos primeiros no Brasil. Especialista em arquitetura cloud, automação de infraestrutura, IAM
+        e CloudFormation. Atua em grandes projetos AWS no Brasil e fora dele.
+      </p>
+    </div>
+
+    <div class="pessoa">
+      <h3>Palla</h3>
+      <p class="texto-suave">
+        Marcelo Palladino. Mais de três décadas na indústria de software, entre desenvolvimento,
+        arquitetura, Developer Advocacy na AWS e engenharia no Nubank. Hoje dirige a área de AI &
+        Modernization na Dati, consultoria parceira da AWS, onde trabalha com adoção de IA e com
+        modernização de sistemas que já estão em produção.
+      </p>
+    </div>
+  </section>
+
+  {
+    LINKS.workshop && (
+      <section>
+        <h2 class="subtitulo-secao">O workshop</h2>
+        <p>
+          Além da newsletter, a gente faz encontros de dois dias em que você constrói junto e sai com
+          algo no ar.{' '}
+          <a href={LINKS.workshop}>Ver a próxima edição</a>.
+        </p>
+      </section>
+    )
+  }
+
+  <div>
+    <FormularioNewsletter variante="discreto" />
+  </div>
+</Base>
+
+<style>
+  .pessoa + .pessoa {
+    margin-top: 1.8rem;
+  }
+
+  .pessoa h3 {
+    margin-bottom: 0.4rem;
+    color: var(--acento);
+  }
+
+  .pessoa p {
+    margin-bottom: 0;
+  }
+</style>

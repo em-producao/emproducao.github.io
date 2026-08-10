@@ -1,0 +1,99 @@
+---
+import { NAVEGACAO, LINKS } from '../consts';
+
+const atual = Astro.url.pathname;
+const itens = [
+  ...NAVEGACAO,
+  ...(LINKS.workshop ? [{ texto: 'Workshop', href: LINKS.workshop }] : []),
+];
+
+function ativo(href: string) {
+  return href.startsWith('/') && atual.startsWith(href);
+}
+---
+
+<header>
+  <div class="container barra">
+    <a href="/" class="marca" aria-label="Em Produção, página inicial">
+      <svg viewBox="0 0 64 64" width="18" height="18" fill="none" aria-hidden="true">
+        <polyline
+          points="8,8 32,32 8,56"
+          stroke="currentColor"
+          stroke-width="6"
+          stroke-linecap="square"
+          stroke-linejoin="miter"
+          stroke-miterlimit="10"></polyline>
+        <line x1="42" y1="52" x2="60" y2="52" stroke="currentColor" stroke-width="6" stroke-linecap="square"
+        ></line>
+      </svg>
+      <span>em produção</span>
+    </a>
+
+    <nav aria-label="Principal">
+      {
+        itens.map((item) => (
+          <a href={item.href} aria-current={ativo(item.href) ? 'page' : undefined}>
+            {item.texto}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--borda);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--fundo) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+    flex-wrap: wrap;
+  }
+
+  .marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--fonte-ui);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--acento);
+  }
+
+  .marca:hover {
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    gap: 1.4rem;
+  }
+
+  nav a {
+    font-family: var(--fonte-ui);
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--texto);
+    text-decoration: none;
+  }
+
+  nav a[aria-current='page'] {
+    box-shadow: inset 0 -1px 0 var(--acento);
+  }
+</style>

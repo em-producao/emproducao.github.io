@@ -1,0 +1,90 @@
+---
+import { caminhoDoNumero, dataCurta, dataISO, type Numero } from '../lib/newsletter';
+
+interface Props {
+  numeros: Numero[];
+  /** Mostra o resumo abaixo do título. Ligado na home, desligado no arquivo. */
+  comResumo?: boolean;
+}
+
+const { numeros, comResumo = false } = Astro.props;
+---
+
+<ul class="lista">
+  {
+    numeros.map((numero) => (
+      <li>
+        <article>
+          <a class="titulo" href={caminhoDoNumero(numero)}>
+            {numero.data.titulo}
+          </a>
+          <p class="meta">
+            <time datetime={dataISO(numero.data.data)}>{dataCurta(numero.data.data)}</time>
+            <span aria-hidden="true">·</span>
+            <span>nº {numero.data.numero}</span>
+            {numero.data.rascunho && <span class="rascunho">rascunho</span>}
+          </p>
+          {comResumo && <p class="resumo">{numero.data.resumo}</p>}
+        </article>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  li + li {
+    border-top: 1px solid var(--borda);
+  }
+
+  article {
+    padding-block: 1rem;
+  }
+
+  .titulo {
+    font-family: var(--fonte-ui);
+    font-weight: 700;
+    font-size: 1.02rem;
+    line-height: 1.35;
+    color: var(--texto);
+    display: inline-block;
+  }
+
+  .titulo:hover {
+    color: var(--acento);
+    text-decoration: none;
+  }
+
+  .meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0.35rem 0 0;
+    font-family: var(--fonte-ui);
+    font-size: 0.74rem;
+    color: var(--texto-fraco);
+  }
+
+  .rascunho {
+    color: var(--terminal);
+    border: 1px solid currentColor;
+    padding: 0 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+  }
+
+  .resumo {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+    color: var(--texto-suave);
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import ListaDeNumeros from '../../components/ListaDeNumeros.astro';
+import FormularioNewsletter from '../../components/FormularioNewsletter.astro';
+import { agruparPorAno, listarNumeros } from '../../lib/newsletter';
+
+const numeros = await listarNumeros();
+const anos = agruparPorAno(numeros);
+---
+
+<Base
+  titulo="Arquivo da newsletter"
+  descricao="Todos os números da newsletter Em Produção, sobre cloud, IA e o caminho até produção."
+>
+  <section>
+    <h1>Arquivo</h1>
+    <p class="texto-suave">
+      Todo número publicado, do mais recente para o mais antigo. O texto completo fica aqui no site.
+    </p>
+  </section>
+
+  {
+    anos.length > 0 ? (
+      anos.map((grupo) => (
+        <section>
+          <h2 class="subtitulo-secao" id={`ano-${grupo.ano}`}>
+            {grupo.ano}
+          </h2>
+          <ListaDeNumeros numeros={grupo.numeros} comResumo />
+        </section>
+      ))
+    ) : (
+      <div>
+        <p class="aviso">Nenhum número publicado ainda.</p>
+      </div>
+    )
+  }
+
+  <div>
+    <FormularioNewsletter variante="discreto" />
+  </div>
+</Base>
