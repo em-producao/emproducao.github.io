@@ -9,7 +9,9 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
-  integrations: [sitemap()],
+  // A /obrigado/ é noindex: só faz sentido para quem acabou de confirmar a
+  // inscrição. Anunciá-la no sitemap seria pedir para o buscador ignorar.
+  integrations: [sitemap({ filter: (pagina) => !pagina.endsWith('/obrigado/') })],
   markdown: {
     shikiConfig: {
       // Os dois temas saem no HTML. Qual deles vale é decidido no CSS, em
