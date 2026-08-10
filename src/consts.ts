@@ -20,13 +20,12 @@ export const SITE = {
 /**
  * Newsletter.
  *
- * `formId` é o identificador do formulário no Kit (ex-ConvertKit). Ele aparece
- * na URL do formulário dentro do painel, em app.kit.com/forms/designers/<id>.
- * Com ele preenchido, o formulário do site posta direto para o Kit sem
- * carregar nenhum JavaScript de terceiro.
+ * `formId` é o id numérico do formulário no Kit (ex-ConvertKit), o
+ * `data-sv-form` do embed. Com ele preenchido, o formulário do site posta
+ * direto para o Kit sem carregar nenhum JavaScript de terceiro.
  */
 export const NEWSLETTER = {
-  formId: '', // PENDENTE: id do formulário no Kit
+  formId: '9787633',
   nome: 'Em Produção',
   chamada: 'Todo número chega por e-mail primeiro e depois fica publicado aqui, aberto.',
 } as const;
