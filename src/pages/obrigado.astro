@@ -1,0 +1,34 @@
+---
+// Página de destino depois que a pessoa confirma a inscrição pelo e-mail do
+// Kit. Quem chega aqui veio de um clique no e-mail, não de um link do site,
+// por isso ela fica fora do menu e fora do sitemap (o filtro está em
+// `astro.config.mjs`).
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  titulo="Inscrição confirmada"
+  descricao="Sua inscrição no Em Produção está confirmada."
+  semIndexar
+>
+  <section>
+    <p class="rotulo">Inscrição confirmada</p>
+    <h1>Pronto, você está na lista</h1>
+    <p class="chamada">O próximo número chega no seu e-mail.</p>
+    <p class="texto-suave">
+      Se ele não aparecer na caixa de entrada, olhe na aba de promoções ou no spam e arraste a
+      mensagem de volta. Isso ensina o seu provedor a entregar os próximos.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="subtitulo-secao">Enquanto isso</h2>
+    <p>
+      Os números anteriores ficam publicados aqui no site, abertos, sem pedir e-mail de novo. Dá para
+      começar por qualquer um.
+    </p>
+    <p>
+      <a class="botao botao-vazado" href="/newsletter/">Ler os números anteriores</a>
+    </p>
+  </section>
+</Base>
