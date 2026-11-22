@@ -1,5 +1,6 @@
 ---
 import { NAVEGACAO, LINKS } from '../consts';
+import Selo from './Selo.astro';
 
 const atual = Astro.url.pathname;
 const itens = [
@@ -15,17 +16,7 @@ function ativo(href: string) {
 <header>
   <div class="container barra">
     <a href="/" class="marca" aria-label="Em Produção, página inicial">
-      <svg viewBox="0 0 64 64" width="18" height="18" fill="none" aria-hidden="true">
-        <polyline
-          points="8,8 32,32 8,56"
-          stroke="currentColor"
-          stroke-width="6"
-          stroke-linecap="square"
-          stroke-linejoin="miter"
-          stroke-miterlimit="10"></polyline>
-        <line x1="42" y1="52" x2="60" y2="52" stroke="currentColor" stroke-width="6" stroke-linecap="square"
-        ></line>
-      </svg>
+      <Selo tamanho="2.75rem" />
       <span>em produção</span>
     </a>
 
