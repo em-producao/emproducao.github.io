@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import FormularioNewsletter from '../components/FormularioNewsletter.astro';
 import ListaDeNumeros from '../components/ListaDeNumeros.astro';
+import Selo from '../components/Selo.astro';
 import { LINKS } from '../consts';
 import { listarNumeros } from '../lib/newsletter';
 
@@ -11,6 +12,7 @@ const ultimos = numeros.slice(0, 5);
 
 <Base>
   <section class="abertura">
+    <Selo />
     <p class="rotulo">Newsletter semanal</p>
     <h1>Seu projeto funciona. E agora?</h1>
     <p class="chamada">Uma carta por semana sobre a distância entre funcionar e existir.</p>
@@ -64,6 +66,10 @@ const ultimos = numeros.slice(0, 5);
 </Base>
 
 <style>
+  .abertura :global(.selo) {
+    margin-bottom: 1.6rem;
+  }
+
   .abertura h1 {
     margin-bottom: 0.7rem;
   }
